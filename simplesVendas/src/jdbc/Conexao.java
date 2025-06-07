@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *
  * @author TADS
  */
-public class Conexao {
+public class Conexao {    
     public static void main(String[] args)
     {
         Connection minhaConexao = conectar();
@@ -40,5 +40,17 @@ public class Conexao {
             JOptionPane.showMessageDialog(null, "Ops, algo deu errado: " + e.getMessage());
             return null;
         }
+    }
+    
+    public static Connection desconectar() {
+        Connection conexao = null;
+        try {
+            conexao.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        return conexao;
     }
 }
