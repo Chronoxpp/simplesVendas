@@ -5,6 +5,9 @@
 package view;
 
 import controller.ClienteDAO;
+import java.util.List;
+import java.util.Set;
+import javax.swing.table.DefaultTableModel;
 import model.Cliente;
 
 /**
@@ -67,10 +70,10 @@ public class TelaCliente extends javax.swing.JFrame {
         jButton10 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblClientes = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtPesquisar = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
 
         jPasswordField1.setText("jPasswordField1");
@@ -144,12 +147,6 @@ public class TelaCliente extends javax.swing.JFrame {
         lblNumero.setText("Nr");
         lblNumero.setToolTipText("");
 
-        txtNumero.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNumeroActionPerformed(evt);
-            }
-        });
-
         lblCidade.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lblCidade.setText("Cidade");
 
@@ -180,7 +177,7 @@ public class TelaCliente extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        cboUf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Distrito Federal", "Goiás", "Mato Grosso", "Mato Grosso do Sul", "Alagoas", "Bahia", "Ceará", "Maranhão", "Paraíba", "Pernambuco", "Piauí", "Rio Grande do Norte", "Sergipe", "Acre", "Amapá", "Amazonas", "Pará", "Rondônia", "Roraima", "Tocantins", "Espírito Santo", "Minas Gerais", "Rio de Janeiro", "São Paulo", "Paraná", "Rio Grande do Sul", "Santa Catarina", " " }));
+        cboUf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DF", "GO", "MT", "MS", "AL", "BH", "CE", "MA", "PB", "PE", "PI", "RN", "SE", "AC", "AP", "AM", "PA", "RO", "RR", "TO", "ES", "MG", "RJ", "SP", "PR", "RS", "SC", " " }));
 
         try {
             fmtRg.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-##")));
@@ -356,7 +353,7 @@ public class TelaCliente extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -372,11 +369,17 @@ public class TelaCliente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tblClientes);
 
         jPanel7.setOpaque(false);
 
         jLabel2.setText("Nome:");
+
+        txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPesquisarKeyTyped(evt);
+            }
+        });
 
         jButton9.setText("Pesquisar");
 
@@ -388,7 +391,7 @@ public class TelaCliente extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton9)
                 .addContainerGap(508, Short.MAX_VALUE))
@@ -399,7 +402,7 @@ public class TelaCliente extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
@@ -449,10 +452,6 @@ public class TelaCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNumeroActionPerformed
-
     private void btnNomePesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNomePesquisarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNomePesquisarActionPerformed
@@ -478,6 +477,10 @@ public class TelaCliente extends javax.swing.JFrame {
 
         dao.cadastrarCliente(obj);
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void txtPesquisarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyTyped
+        listar();
+    }//GEN-LAST:event_txtPesquisarKeyTyped
 
     /**
      * @param args the command line arguments
@@ -507,6 +510,38 @@ public class TelaCliente extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void listar()
+    {
+        ClienteDAO clienteDao = new ClienteDAO();
+        List<Cliente> clientes = clienteDao.obterClientes();
+        
+        DefaultTableModel tabelaDados = (DefaultTableModel) tblClientes.getModel();
+        tabelaDados.setNumRows(0);
+        
+        for(Cliente cliente : clientes)
+        {
+            tabelaDados.addRow(
+                new Object[]{
+                    cliente.getId(),
+                    cliente.getNome(),
+                    cliente.getRg(),
+                    cliente.getCpf(),
+                    cliente.getEmail(),
+                    cliente.getTelefone(),
+                    cliente.getCelular(),
+                    cliente.getCep(),
+                    cliente.getEndereco(),
+                    cliente.getNumero(),
+                    cliente.getComplemento(),
+                    cliente.getBairro(),
+                    cliente.getCidade(),
+                    cliente.getUf()
+                }
+            );
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNomePesquisar;
@@ -527,8 +562,6 @@ public class TelaCliente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblBairro;
     private javax.swing.JLabel lblCelular;
     private javax.swing.JLabel lblCep;
@@ -544,6 +577,7 @@ public class TelaCliente extends javax.swing.JFrame {
     private javax.swing.JLabel lblTelefone;
     private javax.swing.JLabel lblUf;
     private javax.swing.JTabbedPane tbdConsultaCliente;
+    private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtBairro;
     private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtComplemento;
@@ -552,5 +586,6 @@ public class TelaCliente extends javax.swing.JFrame {
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtNumero;
+    private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
 }
