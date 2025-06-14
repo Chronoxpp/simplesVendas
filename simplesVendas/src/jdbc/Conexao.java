@@ -32,7 +32,6 @@ public class Conexao {
         {
             Class.forName(driver);
             conexao = DriverManager.getConnection(url, user, senha);
-            JOptionPane.showMessageDialog(null, "Conectado com sucesso!");
             return conexao;
         }
         catch(Exception e)

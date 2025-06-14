@@ -7,6 +7,7 @@ package view;
 import controller.ClienteDAO;
 import java.util.List;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Cliente;
 
@@ -68,6 +69,8 @@ public class TelaCliente extends javax.swing.JFrame {
         fmtCpf = new javax.swing.JFormattedTextField();
         jPanel6 = new javax.swing.JPanel();
         jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
@@ -80,6 +83,11 @@ public class TelaCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de clientes");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 
@@ -193,10 +201,24 @@ public class TelaCliente extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(102, 102, 255));
 
-        jButton10.setText("jButton10");
+        jButton10.setText("+Novo");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton10ActionPerformed(evt);
+            }
+        });
+
+        jButton11.setText("Deletar");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
+        jButton12.setText("Editar");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
             }
         });
 
@@ -207,14 +229,21 @@ public class TelaCliente extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addComponent(jButton10)
+                .addGap(18, 18, 18)
+                .addComponent(jButton11)
+                .addGap(18, 18, 18)
+                .addComponent(jButton12)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(jButton10)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -376,8 +405,8 @@ public class TelaCliente extends javax.swing.JFrame {
         jLabel2.setText("Nome:");
 
         txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPesquisarKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesquisarKeyReleased(evt);
             }
         });
 
@@ -478,9 +507,47 @@ public class TelaCliente extends javax.swing.JFrame {
         dao.cadastrarCliente(obj);
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    private void txtPesquisarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyTyped
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        Cliente cliente = new Cliente();
+        cliente.setId(Integer.parseInt(txtId.getText()));
+        
+        ClienteDAO clienteDao = new ClienteDAO();
+        if(clienteDao.deletarCliente(cliente))
+        {
+            JOptionPane.showMessageDialog(null, "Cliente deletado com sucesso ;)");
+        }
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         listar();
-    }//GEN-LAST:event_txtPesquisarKeyTyped
+    }//GEN-LAST:event_formWindowOpened
+
+    private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased
+        txtPesquisar.setText(txtPesquisar.getText().trim());
+        listar(txtPesquisar.getText());
+    }//GEN-LAST:event_txtPesquisarKeyReleased
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        Cliente cliente = new Cliente();
+
+        cliente.setNome(txtNome.getText());
+        cliente.setRg(fmtRg.getText());
+        cliente.setCpf(fmtCpf.getText());
+        cliente.setEmail(txtEmail.getText());
+        cliente.setTelefone(fmtTelefone.getText());
+        cliente.setCelular(fmtCelular.getText());
+        cliente.setCep(fmtCep.getText());
+        cliente.setEndereco(txtEndereco.getText());
+        cliente.setNumero(txtNumero.getText());
+        cliente.setComplemento(txtComplemento.getText());
+        cliente.setBairro(txtBairro.getText());
+        cliente.setCidade(txtCidade.getText());
+        cliente.setUf(cboUf.getSelectedItem().toString());
+
+        ClienteDAO dao = new ClienteDAO();
+
+        dao.alterarCliente(cliente);
+    }//GEN-LAST:event_jButton12ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -542,6 +609,37 @@ public class TelaCliente extends javax.swing.JFrame {
         }
     }
     
+        public void listar(String nome)
+    {
+        ClienteDAO clienteDao = new ClienteDAO();
+        List<Cliente> clientes = clienteDao.obterClientes(nome);
+        
+        DefaultTableModel tabelaDados = (DefaultTableModel) tblClientes.getModel();
+        tabelaDados.setNumRows(0);
+        
+        for(Cliente cliente : clientes)
+        {
+            tabelaDados.addRow(
+                new Object[]{
+                    cliente.getId(),
+                    cliente.getNome(),
+                    cliente.getRg(),
+                    cliente.getCpf(),
+                    cliente.getEmail(),
+                    cliente.getTelefone(),
+                    cliente.getCelular(),
+                    cliente.getCep(),
+                    cliente.getEndereco(),
+                    cliente.getNumero(),
+                    cliente.getComplemento(),
+                    cliente.getBairro(),
+                    cliente.getCidade(),
+                    cliente.getUf()
+                }
+            );
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNomePesquisar;
@@ -552,6 +650,8 @@ public class TelaCliente extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField fmtRg;
     private javax.swing.JFormattedTextField fmtTelefone;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
