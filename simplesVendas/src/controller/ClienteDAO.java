@@ -52,7 +52,7 @@ public class ClienteDAO {
 
             //3 passo - executar o comando sql
             stmt.execute();
-            JOptionPane.showConfirmDialog(null, "Cliente cadastrado!");
+            JOptionPane.showMessageDialog(null, "Cliente cadastrado!");
             stmt.close();
 
         } catch (SQLException erro) {
@@ -190,10 +190,10 @@ public class ClienteDAO {
             comando.setString(13, cliente.getUf());
 
             comando.setInt(14, cliente.getId());
-
+            
             comando.execute();
             comando.close();
-
+            System.out.print("ID: " + cliente.getId());
             JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
 
         }
