@@ -84,11 +84,6 @@ public class TelaProduto extends javax.swing.JFrame {
         );
 
         tbdProdutos.setBackground(new java.awt.Color(255, 255, 255));
-        tbdProdutos.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                tbdProdutosFocusGained(evt);
-            }
-        });
 
         tbdPnlDadosBasicos.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -234,6 +229,11 @@ public class TelaProduto extends javax.swing.JFrame {
         tbdProdutos.addTab("Dados básicos", tbdPnlDadosBasicos);
 
         tbdPnlConsultaProdutos.setBackground(new java.awt.Color(255, 255, 255));
+        tbdPnlConsultaProdutos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tbdPnlConsultaProdutosFocusGained(evt);
+            }
+        });
 
         lblDescricaoPesquisar.setText("Nome:");
 
@@ -332,11 +332,6 @@ public class TelaProduto extends javax.swing.JFrame {
         listar(txtDescricaoPesquisar.getText());
     }//GEN-LAST:event_txtDescricaoPesquisarKeyReleased
 
-    private void tbdProdutosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tbdProdutosFocusGained
-        txtDescricaoPesquisar.setText(txtDescricaoPesquisar.getText().trim());
-        listar(txtDescricaoPesquisar.getText());
-    }//GEN-LAST:event_tbdProdutosFocusGained
-
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         Produto produto = new Produto();
 
@@ -380,6 +375,11 @@ public class TelaProduto extends javax.swing.JFrame {
     private void btnIdPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIdPesquisarActionPerformed
         utilitarios.Utilitarios.LimpaTela(tbdPnlDadosBasicos);
     }//GEN-LAST:event_btnIdPesquisarActionPerformed
+
+    private void tbdPnlConsultaProdutosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tbdPnlConsultaProdutosFocusGained
+        txtDescricaoPesquisar.setText(txtDescricaoPesquisar.getText().trim());
+        listar(txtDescricaoPesquisar.getText());
+    }//GEN-LAST:event_tbdPnlConsultaProdutosFocusGained
 
     /**
      * @param args the command line arguments
@@ -438,7 +438,7 @@ public class TelaProduto extends javax.swing.JFrame {
         }
     }
     
-        public void listar(String descricao)
+    public void listar(String descricao)
     {
         ProdutoDAO produtoDao = new ProdutoDAO();
         List<Produto> produtos = produtoDao.obterProdutos(descricao);
@@ -458,6 +458,7 @@ public class TelaProduto extends javax.swing.JFrame {
                 }
             );
         }
+    }
 
         
     // Variables declaration - do not modify//GEN-BEGIN:variables

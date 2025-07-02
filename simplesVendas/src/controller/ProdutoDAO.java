@@ -19,7 +19,7 @@ import java.sql.ResultSet;
  * @author Lucas
  */
 public class ProdutoDAO {
-    private final Connection con;
+    private Connection con;
     
     public ProdutoDAO() {
         this.con = Conexao.conectar();
@@ -108,6 +108,12 @@ public class ProdutoDAO {
            }
         }
         catch(SQLException erro)
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao obter produtos no BD: " + erro.getMessage());
+            
+            return null;
+        }
+        catch(Exception erro)
         {
             JOptionPane.showMessageDialog(null, "Erro ao obter produtos no BD: " + erro.getMessage());
             
