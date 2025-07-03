@@ -4,11 +4,16 @@
  */
 package view;
 
+import controller.FornecedorDAO;
 import controller.ProdutoDAO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.Fornecedor;
 import model.Produto;
 
 /**
@@ -52,6 +57,7 @@ public class TelaProduto extends javax.swing.JFrame {
         btnCadastrar = new javax.swing.JButton();
         btnDeletar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
+        cboFornecedores = new javax.swing.JComboBox<>();
         tbdPnlConsultaProdutos = new javax.swing.JPanel();
         lblDescricaoPesquisar = new javax.swing.JLabel();
         txtDescricaoPesquisar = new javax.swing.JTextField();
@@ -59,6 +65,11 @@ public class TelaProduto extends javax.swing.JFrame {
         tblProdutos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 
@@ -193,7 +204,9 @@ public class TelaProduto extends javax.swing.JFrame {
                             .addGroup(tbdPnlDadosBasicosLayout.createSequentialGroup()
                                 .addComponent(lblIdFornecedor)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtIdFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtIdFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cboFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 356, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -220,7 +233,8 @@ public class TelaProduto extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(tbdPnlDadosBasicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIdFornecedor)
-                    .addComponent(txtIdFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIdFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -324,7 +338,18 @@ public class TelaProduto extends javax.swing.JFrame {
         txtDescricao.setText(tblProdutos.getValueAt(linha, 1).toString());
         fmtPreco.setText(tblProdutos.getValueAt(linha, 2).toString());
         txtEstoque.setText(tblProdutos.getValueAt(linha, 3).toString());
-        txtIdFornecedor.setText(tblProdutos.getValueAt(linha, 4).toString());
+        
+        int idFornecedor = Integer.parseInt(tblProdutos.getValueAt(linha, 4).toString());
+        DefaultComboBoxModel<String> modelo = (DefaultComboBoxModel<String>) cboFornecedores.getModel();
+        for(int i = 0; i < modelo.getSize(); i+= 1)
+        {
+            String cboFornecedorTexto = modelo.getElementAt(i);
+            int cboFornecedorTextoId = Integer.parseInt(cboFornecedorTexto.substring(0,cboFornecedorTexto.indexOf("-")));
+            if(cboFornecedorTextoId == idFornecedor)
+            {
+                cboFornecedores.setSelectedIndex(i);
+            }
+        }
     }//GEN-LAST:event_tblProdutosMouseClicked
 
     private void txtDescricaoPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescricaoPesquisarKeyReleased
@@ -339,7 +364,10 @@ public class TelaProduto extends javax.swing.JFrame {
         produto.setDescricao(txtDescricao.getText());
         produto.setPreco(Double.parseDouble(fmtPreco.getText()));
         produto.setEstoque(Integer.parseInt(txtEstoque.getText()));
-        produto.setIdFornecedor(Integer.parseInt(txtIdFornecedor.getText()));
+        
+        String cboFornecedorTexto = cboFornecedores.getModel().getElementAt(cboFornecedores.getSelectedIndex());
+        int idFornecedor = Integer.parseInt(cboFornecedorTexto.substring(0,cboFornecedorTexto.indexOf("-")));
+        produto.setIdFornecedor(idFornecedor);
 
         ProdutoDAO dao = new ProdutoDAO();
 
@@ -364,7 +392,10 @@ public class TelaProduto extends javax.swing.JFrame {
         produto.setDescricao(txtDescricao.getText());
         produto.setPreco(Double.parseDouble(fmtPreco.getText()));
         produto.setEstoque(Integer.parseInt(txtEstoque.getText()));
-        produto.setIdFornecedor(Integer.parseInt(txtIdFornecedor.getText()));
+        
+        String cboFornecedorTexto = cboFornecedores.getModel().getElementAt(cboFornecedores.getSelectedIndex());
+        int idFornecedor = Integer.parseInt(cboFornecedorTexto.substring(0,cboFornecedorTexto.indexOf("-")));
+        produto.setIdFornecedor(idFornecedor);
 
         ProdutoDAO dao = new ProdutoDAO();
 
@@ -380,6 +411,21 @@ public class TelaProduto extends javax.swing.JFrame {
         txtDescricaoPesquisar.setText(txtDescricaoPesquisar.getText().trim());
         listar(txtDescricaoPesquisar.getText());
     }//GEN-LAST:event_tbdPnlConsultaProdutosFocusGained
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        List<Fornecedor> fornecedores = new FornecedorDAO().obterFornecedores();
+
+        String[] itensCboFornecedores = new String[fornecedores.size()];
+
+        int i =0;
+        for(Fornecedor fornecedor : fornecedores)
+        {
+            itensCboFornecedores[i++] = fornecedor.getId() + "-" + fornecedor.getNome();
+        }
+        DefaultComboBoxModel<String> modeloCbo =  new DefaultComboBoxModel<>(itensCboFornecedores);
+    
+        cboFornecedores.setModel(modeloCbo);
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -466,6 +512,7 @@ public class TelaProduto extends javax.swing.JFrame {
     private javax.swing.JButton btnDeletar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnIdPesquisar;
+    private javax.swing.JComboBox<String> cboFornecedores;
     private javax.swing.JFormattedTextField fmtPreco;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
