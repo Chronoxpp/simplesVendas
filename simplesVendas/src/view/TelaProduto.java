@@ -109,7 +109,7 @@ public class TelaProduto extends javax.swing.JFrame {
         lblEstoque.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lblEstoque.setText("Estoque");
 
-        fmtPreco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("¤ #,##0.00"))));
+        fmtPreco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         jPanel6.setBackground(new java.awt.Color(102, 102, 255));
 

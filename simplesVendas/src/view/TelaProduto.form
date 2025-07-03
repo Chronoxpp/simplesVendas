@@ -250,7 +250,7 @@
             <Component class="javax.swing.JFormattedTextField" name="fmtPreco">
               <Properties>
                 <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-                  <Format format="&#xa4;&#xa0;#,##0.00" subtype="-1" type="4"/>
+                  <Format format="#,##0.00" subtype="-1" type="4"/>
                 </Property>
               </Properties>
             </Component>
