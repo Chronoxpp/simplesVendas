@@ -127,7 +127,7 @@ public class ProdutoDAO {
     {
         try
         {
-            String sql = "DELETE FROM tb_produto WHERE id = ?";
+            String sql = "DELETE FROM tb_produtos WHERE id = ?";
             
             PreparedStatement comando = con.prepareStatement(sql);
             comando.setInt(1, produto.getId());
