@@ -13,7 +13,7 @@ public class Produto {
     private String descricao;
     private double preco;
     private int estoque;
-    private int idFornecedor;
+    private Fornecedor fornecedor;
 
     public int getId() {
         return id;
@@ -47,11 +47,11 @@ public class Produto {
         this.estoque = estoque;
     }
 
-    public int getIdFornecedor() {
-        return idFornecedor;
+    public Fornecedor getFornecedor() {
+        return fornecedor;
     }
 
-    public void setIdFornecedor(int idFornecedor) {
-        this.idFornecedor = idFornecedor;
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 }

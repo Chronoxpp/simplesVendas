@@ -258,7 +258,7 @@ public class TelaProduto extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Descricao", "Preco", "Estoque", "Id fabricante"
+                "Id", "Descricao", "Preco", "Estoque", "Fabricante"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -334,18 +334,7 @@ public class TelaProduto extends javax.swing.JFrame {
         txtDescricao.setText(tblProdutos.getValueAt(linha, 1).toString());
         fmtPreco.setText(tblProdutos.getValueAt(linha, 2).toString().replace(".", ","));
         txtEstoque.setText(tblProdutos.getValueAt(linha, 3).toString());
-        
-        int idFornecedor = Integer.parseInt(tblProdutos.getValueAt(linha, 4).toString());
-        DefaultComboBoxModel<String> modelo = (DefaultComboBoxModel<String>) cboFornecedores.getModel();
-        for(int i = 0; i < modelo.getSize(); i+= 1)
-        {
-            String cboFornecedorTexto = modelo.getElementAt(i);
-            int cboFornecedorTextoId = Integer.parseInt(cboFornecedorTexto.substring(0,cboFornecedorTexto.indexOf("-")));
-            if(cboFornecedorTextoId == idFornecedor)
-            {
-                cboFornecedores.setSelectedIndex(i);
-            }
-        }
+        cboFornecedores.getModel().setSelectedItem((Fornecedor) tblProdutos.getValueAt(linha, 4));
     }//GEN-LAST:event_tblProdutosMouseClicked
 
     private void txtDescricaoPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescricaoPesquisarKeyReleased
@@ -360,14 +349,12 @@ public class TelaProduto extends javax.swing.JFrame {
         produto.setDescricao(txtDescricao.getText());
         produto.setPreco(Double.parseDouble(fmtPreco.getText().replace(".", "").replace(",", ".")));
         produto.setEstoque(Integer.parseInt(txtEstoque.getText()));
-        
-        String cboFornecedorTexto = cboFornecedores.getModel().getElementAt(cboFornecedores.getSelectedIndex());
-        int idFornecedor = Integer.parseInt(cboFornecedorTexto.substring(0,cboFornecedorTexto.indexOf("-")));
-        produto.setIdFornecedor(idFornecedor);
+        produto.setFornecedor((Fornecedor) cboFornecedores.getSelectedItem());
 
         ProdutoDAO dao = new ProdutoDAO();
 
         dao.alterarProduto(produto);
+        utilitarios.Utilitarios.LimpaTela(tbdPnlDadosBasicos);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
@@ -388,10 +375,7 @@ public class TelaProduto extends javax.swing.JFrame {
         produto.setDescricao(txtDescricao.getText());
         produto.setPreco(Double.parseDouble(fmtPreco.getText().replace(".", "").replace(",", ".")));
         produto.setEstoque(Integer.parseInt(txtEstoque.getText()));
-        
-        String cboFornecedorTexto = cboFornecedores.getModel().getElementAt(cboFornecedores.getSelectedIndex());
-        int idFornecedor = Integer.parseInt(cboFornecedorTexto.substring(0,cboFornecedorTexto.indexOf("-")));
-        produto.setIdFornecedor(idFornecedor);
+        produto.setFornecedor((Fornecedor) cboFornecedores.getSelectedItem());
 
         ProdutoDAO dao = new ProdutoDAO();
 
@@ -408,19 +392,8 @@ public class TelaProduto extends javax.swing.JFrame {
         
         for(Fornecedor fornecedor : fornecedores)
         {
-            cboFornecedores.addItem(item);
+            cboFornecedores.addItem(fornecedor);
         }
-
-//        String[] itensCboFornecedores = new String[fornecedores.size()];
-//
-//        int i =0;
-//        for(Fornecedor fornecedor : fornecedores)
-//        {
-//            itensCboFornecedores[i++] = fornecedor.getId() + "-" + fornecedor.getNome();
-//        }
-//        DefaultComboBoxModel<String> modeloCbo =  new DefaultComboBoxModel<>(itensCboFornecedores);
-//    
-//        cboFornecedores.setModel(modeloCbo);
     }//GEN-LAST:event_formWindowOpened
 
     private void tbdPnlConsultaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbdPnlConsultaProdutosMouseClicked
@@ -479,7 +452,7 @@ public class TelaProduto extends javax.swing.JFrame {
                     produto.getDescricao(),
                     produto.getPreco(),
                     produto.getEstoque(),
-                    produto.getIdFornecedor(),
+                    produto.getFornecedor(),
                 }
             );
         }
@@ -501,7 +474,7 @@ public class TelaProduto extends javax.swing.JFrame {
                     produto.getDescricao(),
                     produto.getPreco(),
                     produto.getEstoque(),
-                    produto.getIdFornecedor(),
+                    produto.getFornecedor(),
                 }
             );
         }
@@ -513,7 +486,7 @@ public class TelaProduto extends javax.swing.JFrame {
     private javax.swing.JButton btnDeletar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnIdPesquisar;
-    private javax.swing.JComboBox<String> cboFornecedores;
+    private javax.swing.JComboBox<Fornecedor> cboFornecedores;
     private javax.swing.JFormattedTextField fmtPreco;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

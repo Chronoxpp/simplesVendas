@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import model.Produto;
+import model.Fornecedor;
 import java.sql.ResultSet;
 
 /**
@@ -35,7 +36,7 @@ public class ProdutoDAO {
             stmt.setString(1, produto.getDescricao());
             stmt.setDouble(2, produto.getPreco());
             stmt.setInt(3, produto.getEstoque());
-            stmt.setInt(4, produto.getIdFornecedor());
+            stmt.setInt(4, produto.getFornecedor().getId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "Produto cadastrado!");
@@ -66,7 +67,9 @@ public class ProdutoDAO {
                 produto.setDescricao(produtosBD.getString("descricao"));
                 produto.setPreco(produtosBD.getDouble("preco"));
                 produto.setEstoque(produtosBD.getInt("qtd_estoque"));
-                produto.setIdFornecedor(produtosBD.getInt("for_id"));
+                FornecedorDAO fornecedorDao = new FornecedorDAO();
+                Fornecedor fornecedor = fornecedorDao.obterFornecedor(produtosBD.getInt("for_id"));
+                produto.setFornecedor(fornecedor);
                 
                 produtos.add(produto);
            }
@@ -102,7 +105,9 @@ public class ProdutoDAO {
                 produto.setDescricao(produtosBD.getString("descricao"));
                 produto.setPreco(produtosBD.getDouble("preco"));
                 produto.setEstoque(produtosBD.getInt("qtd_estoque"));
-                produto.setIdFornecedor(produtosBD.getInt("for_id"));
+                FornecedorDAO fornecedorDao = new FornecedorDAO();
+                Fornecedor fornecedor = fornecedorDao.obterFornecedor(produtosBD.getInt("for_id"));
+                produto.setFornecedor(fornecedor);
                 
                 produtos.add(produto);
            }
@@ -151,7 +156,7 @@ public class ProdutoDAO {
             comando.setString(1, produto.getDescricao());
             comando.setDouble(2, produto.getPreco());
             comando.setInt(3, produto.getEstoque());
-            comando.setInt(4, produto.getIdFornecedor());
+            comando.setInt(4, produto.getFornecedor().getId());
 
             comando.setInt(5, produto.getId());
             
