@@ -405,17 +405,22 @@ public class TelaProduto extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         List<Fornecedor> fornecedores = new FornecedorDAO().obterFornecedores();
-
-        String[] itensCboFornecedores = new String[fornecedores.size()];
-
-        int i =0;
+        
         for(Fornecedor fornecedor : fornecedores)
         {
-            itensCboFornecedores[i++] = fornecedor.getId() + "-" + fornecedor.getNome();
+            cboFornecedores.addItem(item);
         }
-        DefaultComboBoxModel<String> modeloCbo =  new DefaultComboBoxModel<>(itensCboFornecedores);
-    
-        cboFornecedores.setModel(modeloCbo);
+
+//        String[] itensCboFornecedores = new String[fornecedores.size()];
+//
+//        int i =0;
+//        for(Fornecedor fornecedor : fornecedores)
+//        {
+//            itensCboFornecedores[i++] = fornecedor.getId() + "-" + fornecedor.getNome();
+//        }
+//        DefaultComboBoxModel<String> modeloCbo =  new DefaultComboBoxModel<>(itensCboFornecedores);
+//    
+//        cboFornecedores.setModel(modeloCbo);
     }//GEN-LAST:event_formWindowOpened
 
     private void tbdPnlConsultaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbdPnlConsultaProdutosMouseClicked
