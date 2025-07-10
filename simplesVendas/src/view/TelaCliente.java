@@ -641,7 +641,7 @@ public class TelaCliente extends javax.swing.JFrame {
         }
     }
     
-        public void listar(String nome)
+    public void listar(String nome)
     {
         ClienteDAO clienteDao = new ClienteDAO();
         List<Cliente> clientes = clienteDao.obterClientes(nome);

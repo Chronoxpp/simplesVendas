@@ -212,7 +212,7 @@ public class FornecedorDAO
         }
     }
     
-        public void alterarfornecedor(Fornecedor fornecedor) {
+        public void alterarFornecedor(Fornecedor fornecedor) {
         try {
             String sql = "UPDATE tb_fornecedores SET nome=?, cnpj=?, email=?, telefone=?, celular=?, cep=?, endereco=?, numero=?, complemento=?, bairro=?, cidade=?, estado=? WHERE id =?";
 
