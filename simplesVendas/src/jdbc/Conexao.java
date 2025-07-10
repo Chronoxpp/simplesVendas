@@ -16,6 +16,7 @@ public class Conexao {
     public static void main(String[] args)
     {
         Connection minhaConexao = conectar();
+        
     }
     
     public static Connection conectar()
